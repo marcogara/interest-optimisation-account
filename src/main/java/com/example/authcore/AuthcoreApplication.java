@@ -11,5 +11,4 @@ public class AuthcoreApplication {
 
 		SpringApplication.run(AuthcoreApplication.class, args);
 	}
-
 }
