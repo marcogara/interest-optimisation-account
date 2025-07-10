@@ -1,6 +1,8 @@
 package com.example.authcore.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
+
 
 @Entity
 @Table(name = "users") // Optional: sets the table name
@@ -15,6 +17,8 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$",
+            message = "Password must contain at least 1 uppercase letter, 1 number, and be 8+ characters long")
     private String password;
 
     public User(){}
