@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class AuthController {
 
+    private static final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$";
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -35,20 +36,19 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
-        /**
+
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             model.addAttribute("error", "Email already registered.");
             return "register";
         }
-         */
+
         if (result.hasErrors()) {
             return "register";
         }
 
         String password = user.getPassword();
-        String pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$";
 
-        if (password.matches(pattern)) {
+        if (password.matches(PASSWORD_PATTERN)) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
             model.addAttribute("success", "Account created. Please log in.");
