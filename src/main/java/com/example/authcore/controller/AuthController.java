@@ -5,6 +5,7 @@ import com.example.authcore.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -33,9 +34,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@Valid @ModelAttribute("user") User user, Model model) {
+    public String register(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             model.addAttribute("error", "Email already registered.");
+            return "register";
+        }
+
+        if (result.hasErrors()) {
             return "register";
         }
 
