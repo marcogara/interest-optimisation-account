@@ -35,19 +35,27 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
+        /**
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             model.addAttribute("error", "Email already registered.");
             return "register";
         }
-
+         */
         if (result.hasErrors()) {
             return "register";
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        String password = user.getPassword();
+        String pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$";
 
-        model.addAttribute("success", "Account created. Please log in.");
-        return "register";
+        if (password.matches(pattern)) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+            model.addAttribute("success", "Account created. Please log in.");
+            return "register";
+        } else {
+            model.addAttribute("error", "Password must contain at least 1 uppercase letter, 1 number, and be 8+ characters long");
+            return "register";
+        }
     }
 }
