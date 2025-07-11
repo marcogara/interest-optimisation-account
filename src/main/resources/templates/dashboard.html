@@ -8,5 +8,9 @@
 <h1>Dashboard</h1>
 <h2>Welcome, <span th:text="${username}">user</span>!</h2>
 <p>You are authorized to access this page.</p>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
 </body>
 </html>
