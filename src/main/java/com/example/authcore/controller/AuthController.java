@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Controller
@@ -65,13 +66,8 @@ public class AuthController {
     }
 
     @GetMapping("/dashboard")
-    public String dashboard(HttpSession session, Model model) {
-        Object loggedUser = session.getAttribute("user");
-
-        if (loggedUser == null) {
-            return "redirect:/";
-        }
-        model.addAttribute("username", loggedUser);
+    public String dashboard(Model model, Principal principal) {
+        model.addAttribute("username", principal.getName());
         return "dashboard";
     }
 }
