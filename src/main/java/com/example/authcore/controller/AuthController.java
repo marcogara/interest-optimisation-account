@@ -2,6 +2,7 @@ package com.example.authcore.controller;
 
 import com.example.authcore.model.User;
 import com.example.authcore.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Optional;
 
 @Controller
 public class AuthController {
@@ -24,7 +28,8 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
+        model.addAttribute("user", new User());
         return "login"; // Maps to login.html
     }
 
@@ -57,5 +62,16 @@ public class AuthController {
             model.addAttribute("error", "Password must contain at least 1 uppercase letter, 1 number, and be 8+ characters long");
             return "register";
         }
+    }
+
+    @GetMapping("/dashboard")
+    public String dashboard(HttpSession session, Model model) {
+        Object loggedUser = session.getAttribute("user");
+
+        if (loggedUser == null) {
+            return "redirect:/";
+        }
+        model.addAttribute("username", loggedUser);
+        return "dashboard";
     }
 }
