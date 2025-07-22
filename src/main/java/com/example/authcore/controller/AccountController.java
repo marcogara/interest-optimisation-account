@@ -1,11 +1,13 @@
 package com.example.authcore.controller;
 
 import com.example.authcore.service.AccountService;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
+@Controller
 public class AccountController {
 
     private AccountService accountService;
