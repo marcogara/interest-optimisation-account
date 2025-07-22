@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
-public class AuthcoreApplication {
+public class AuthcoreIOAApplication {
 
 	public static void main(String[] args) {
 
-		SpringApplication.run(AuthcoreApplication.class, args);
+		SpringApplication.run(AuthcoreIOAApplication.class, args);
 	}
 }
