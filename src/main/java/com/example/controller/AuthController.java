@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.model.User;
 import com.example.repository.UserRepository;
+import com.example.service.AccountService;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.util.Optional;
 
 @Controller
 public class AuthController {
@@ -64,7 +67,18 @@ public class AuthController {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model, Principal principal) {
-        model.addAttribute("username", principal.getName());
+        System.out.println("Dashboard accessed by: " + (principal != null ? principal.getName() : "anonymous"));
+
+        // Change to findByEmail if your principal is email
+        Optional<User> userOptional = userRepository.findByName(principal.getName());
+
+        User user = userOptional.orElseThrow(() -> new RuntimeException("User not found"));
+
+        System.out.println("Dashboard: " + user.getEmail() + ", balance: " + user.getAccount());
+
+        model.addAttribute("username", user.getName()); // or user.getEmail()
+        model.addAttribute("account", user.getAccount());
+
         return "dashboard";
     }
 }

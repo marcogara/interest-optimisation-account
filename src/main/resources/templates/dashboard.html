@@ -10,7 +10,7 @@
 <p>You are authorized to access this page.</p>
 
 <!-- Show current balance -->
-<p>Your account balance: <strong th:text="${account}">0.00</strong></p>
+<p>Your account balance: <strong th:text="${#numbers.formatDecimal(account, 1, 2)}">0.00</strong></p>
 
 <!-- Add funds form -->
 <form th:action="@{/account/add}" method="post">

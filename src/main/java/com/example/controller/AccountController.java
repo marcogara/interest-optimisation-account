@@ -20,6 +20,6 @@ public class AccountController {
         System.out.println("Authenticated user: " + (principal != null ? principal.getName() : "null"));
         accountService.addFundsToAccount(principal.getName(), amount);
         System.out.println("Adding funds for: " + principal.getName() + " amount: " + amount);
-        return "redirect:/dashboard";
+        return "dashboard";
     }
 }
