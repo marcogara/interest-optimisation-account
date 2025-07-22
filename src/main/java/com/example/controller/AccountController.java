@@ -16,9 +16,11 @@ public class AccountController {
     }
 
     @PostMapping("/account/add")
-    public String addFunds(@RequestParam double amount, Principal principal) {
+    public String addFunds(@RequestParam ("amount") double amount, Principal principal) {
         String email = principal.getName(); // or however you identify users
         accountService.addFundsToAccount(email, amount);
+        System.out.println("Adding funds for: " + principal.getName() + " amount: " + amount);
+
         return "redirect:/dashboard"; // or wherever the user should go next
     }
 }
