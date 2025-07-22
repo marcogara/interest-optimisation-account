@@ -14,8 +14,7 @@
 
 <!-- Add funds form -->
 <form th:action="@{/account/add}" method="post">
-    <label for="amount">Add Funds:</label>
-    <input type="number" step="0.01" name="amount" id="amount" required>
+    <input type="number" name="amount" step="0.01" required />
     <button type="submit">Add Funds</button>
 </form>
 
