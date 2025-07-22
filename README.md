@@ -39,3 +39,4 @@ CREATE TABLE users (
 GRANT ALL PRIVILEGES ON TABLE users TO store_user;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO store_user;
 ```
+# interest-optimisation-account
