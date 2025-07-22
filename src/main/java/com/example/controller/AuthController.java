@@ -69,7 +69,6 @@ public class AuthController {
     public String dashboard(Model model, Principal principal) {
         System.out.println("Dashboard accessed by: " + (principal != null ? principal.getName() : "anonymous"));
 
-        // Change to findByEmail if your principal is email
         Optional<User> userOptional = userRepository.findByName(principal.getName());
 
         User user = userOptional.orElseThrow(() -> new RuntimeException("User not found"));
