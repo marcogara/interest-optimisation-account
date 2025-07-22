@@ -1,0 +1,5 @@
+com\example\authcore\security\SecurityConfig.class
+com\example\authcore\model\User.class
+com\example\authcore\AuthcoreApplication.class
+com\example\authcore\repository\UserRepository.class
+com\example\authcore\controller\AuthController.class
