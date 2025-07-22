@@ -1,0 +1,73 @@
+package com.example.authcore.controller;
+
+import com.example.authcore.model.User;
+import com.example.authcore.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.security.Principal;
+import java.util.Optional;
+
+@Controller
+public class AuthController {
+
+    private static final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$";
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @GetMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("user", new User());
+        return "login"; // Maps to login.html
+    }
+
+    @GetMapping("/register")
+    public String showRegisterForm(Model model) {
+        model.addAttribute("user", new User());
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String register(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
+
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            model.addAttribute("error", "Email already registered.");
+            return "register";
+        }
+
+        if (result.hasErrors()) {
+            return "register";
+        }
+
+        String password = user.getPassword();
+
+        if (password.matches(PASSWORD_PATTERN)) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+            model.addAttribute("success", "Account created. Please log in.");
+            return "register";
+        } else {
+            model.addAttribute("error", "Password must contain at least 1 uppercase letter, 1 number, and be 8+ characters long");
+            return "register";
+        }
+    }
+
+    @GetMapping("/dashboard")
+    public String dashboard(Model model, Principal principal) {
+        model.addAttribute("username", principal.getName());
+        return "dashboard";
+    }
+}
