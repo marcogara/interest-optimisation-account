@@ -23,6 +23,10 @@ public class User {
             message = "Password must contain at least 1 uppercase letter, 1 number, and be 8+ characters long")
     private String password;
 
+    private double interest;
+
+    private double account;
+
     public User(){}
 
     public User(Long id, String name, String email, String password) {
@@ -62,5 +66,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public double getInterest() {
+        return interest;
+    }
+
+    public void setInterest(double interest) {
+        this.interest = interest;
+    }
+
+    public double getAccount() {
+        return account;
+    }
+
+    public void setAccount(double account) {
+        this.account = account;
     }
 }

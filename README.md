@@ -34,6 +34,10 @@ CREATE TABLE users (
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL
 );
+  
+ALTER TABLE users
+ADD COLUMN interest DOUBLE PRECISION DEFAULT 0,
+ADD COLUMN account DOUBLE PRECISION DEFAULT 0;
 
 -- Optional: Allow your user access to the table and sequences
 GRANT ALL PRIVILEGES ON TABLE users TO store_user;
