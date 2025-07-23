@@ -48,6 +48,8 @@ CREATE TABLE bank (
 
 -- Optional: Allow your user access to the table and sequences
 GRANT ALL PRIVILEGES ON TABLE users TO store_user;
+GRANT ALL PRIVILEGES ON TABLE bank TO store_user;
+GRANT USAGE, SELECT ON SEQUENCE bank_id_seq TO store_user;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO store_user;
 ```
 

@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -41,6 +42,7 @@ public class AdminController {
         }
 
         model.addAttribute("username", user.getName());
+        model.addAttribute("banks", bankRepository.findAll()); // ✅ Pass list of banks
         return "admin-dashboard"; // placeholder, can be created later
     }
 
@@ -48,15 +50,21 @@ public class AdminController {
     public String registerBank(@RequestParam String name,
                                @RequestParam double interest,
                                @RequestParam double account,
-                               Principal principal) {
+                               Principal principal,
+                               RedirectAttributes redirectAttributes) {
         if (!"admin".equals(principal.getName())) {
             return "redirect:/dashboard";
         }
 
-        Bank bank = new Bank(name, interest, account);
-        bankRepository.save(bank);
+        try {
+            Bank bank = new Bank(name, interest, account);
+            bankRepository.save(bank);
 
-        return "redirect:/admin/dashboard"; // Redirect after submission
+            redirectAttributes.addFlashAttribute("success", "✅ Bank created successfully.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "❌ Failed to create bank: " + e.getMessage());
+        }
+        return "redirect:/admin/dashboard";
     }
 
 }
