@@ -39,6 +39,13 @@ ALTER TABLE users
 ADD COLUMN interest DOUBLE PRECISION DEFAULT 0,
 ADD COLUMN account DOUBLE PRECISION DEFAULT 0;
 
+CREATE TABLE bank (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    interest DOUBLE PRECISION NOT NULL,
+    account DOUBLE PRECISION NOT NULL
+);
+
 -- Optional: Allow your user access to the table and sequences
 GRANT ALL PRIVILEGES ON TABLE users TO store_user;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO store_user;
