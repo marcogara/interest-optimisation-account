@@ -13,8 +13,8 @@ public class AccountService {
         this.userRepository = userRepository;
     }
 
-    public void addFundsToAccount(String email, double amount) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
+    public void addFundsToAccount(String name, double amount) throws UsernameNotFoundException {
+        User user = userRepository.findByName(name)
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         user.setAccount(user.getAccount() + amount);
