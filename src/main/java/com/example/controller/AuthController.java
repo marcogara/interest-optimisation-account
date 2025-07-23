@@ -75,8 +75,12 @@ public class AuthController {
 
         System.out.println("Dashboard: " + user.getEmail() + ", balance: " + user.getAccount());
 
+        double interest = user.getInterest(); // e.g., 0.02
+        String formattedInterest = String.format("%.2f%%", interest * 100); // → "2.00%"
+
         model.addAttribute("username", user.getName()); // or user.getEmail()
         model.addAttribute("account", user.getAccount());
+        model.addAttribute("interest", formattedInterest); // pass ready string
 
         return "dashboard";
     }

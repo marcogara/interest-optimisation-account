@@ -12,6 +12,8 @@
 <!-- Show current balance -->
 <p>Your account balance: <strong th:text="${#numbers.formatDecimal(account, 1, 2)}">0.00</strong></p>
 
+<p>Your current interest is: <strong th:text="${interest}">0.00%</strong></p>
+
 <!-- Add funds form -->
 <form th:action="@{/account/add}" method="post">
     <input type="number" name="amount" step="0.01" required />
