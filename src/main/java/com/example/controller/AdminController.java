@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class AdminController {
@@ -41,8 +45,23 @@ public class AdminController {
             return "redirect:/dashboard"; // or a custom 403 page
         }
 
+        // Prepare formatted bank data
+        List<Bank> banks = bankRepository.findAll();
+        List<Map<String, String>> formattedBanks = new ArrayList<>();
+
+        for (Bank bank : banks) {
+            Map<String, String> entry = new HashMap<>();
+            entry.put("name", bank.getName());
+            System.out.println(bank.getName());
+            System.out.println(bank.getInterest());
+            entry.put("interest", String.format("%.2f%%", bank.getInterest() * 100));
+            entry.put("account", String.format("%.2f", bank.getAccount()));
+            formattedBanks.add(entry);
+        }
+
         model.addAttribute("username", user.getName());
-        model.addAttribute("banks", bankRepository.findAll()); // ✅ Pass list of banks
+        model.addAttribute("banks", formattedBanks);
+
         return "admin-dashboard"; // placeholder, can be created later
     }
 
