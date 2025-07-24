@@ -1,7 +1,9 @@
 package com.example.controller;
 
 import com.example.model.Bank;
+import com.example.model.BankAllocation;
 import com.example.model.User;
+import com.example.repository.BankAllocationRepository;
 import com.example.repository.BankRepository;
 import com.example.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,10 +25,12 @@ public class AdminController {
 
     private final UserRepository userRepository;
     private final BankRepository bankRepository;
+    private final BankAllocationRepository bankAllocationRepository;
 
-    public AdminController(UserRepository userRepository, BankRepository bankRepository) {
+    public AdminController(UserRepository userRepository, BankRepository bankRepository, BankAllocationRepository bankAllocationRepository) {
         this.userRepository = userRepository;
         this.bankRepository = bankRepository;
+        this.bankAllocationRepository = bankAllocationRepository;
     }
 
     @GetMapping("/admin/dashboard")
@@ -74,6 +78,7 @@ public class AdminController {
         model.addAttribute("username", user.getName());
         model.addAttribute("banks", formattedBanks);
         model.addAttribute("users", formattedUsers);
+        model.addAttribute("allocations", bankAllocationRepository.findAll()); // ✅ pass allocations
 
         return "admin-dashboard"; // placeholder, can be created later
     }

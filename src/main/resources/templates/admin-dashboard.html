@@ -67,6 +67,26 @@
     </tbody>
 </table>
 
+<h3>Recent Bank Allocations</h3>
+<table>
+    <thead>
+    <tr>
+        <th>Bank...........</th>
+        <th>Amount.........</th>
+        <th>Source.........</th>
+        <th>Timestamp......</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="alloc : ${allocations}">
+        <td th:text="${alloc.bank.name}">Bank Name</td>
+        <td th:text="${alloc.amount}">1000.00</td>
+        <td th:text="${alloc.source}">deposit</td>
+        <td th:text="${#temporals.format(alloc.timestamp, 'yyyy-MM-dd HH:mm')}">2025-07-23</td>
+    </tr>
+    </tbody>
+</table>
+
 <p></p>
 <form th:action="@{/logout}" method="post">
     <button type="submit">Logout</button>
