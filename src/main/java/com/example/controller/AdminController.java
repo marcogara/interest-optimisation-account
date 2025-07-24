@@ -52,15 +52,26 @@ public class AdminController {
         for (Bank bank : banks) {
             Map<String, String> entry = new HashMap<>();
             entry.put("name", bank.getName());
-            System.out.println(bank.getName());
-            System.out.println(bank.getInterest());
             entry.put("interest", String.format("%.2f%%", bank.getInterest() * 100));
             entry.put("account", String.format("%.2f", bank.getAccount()));
             formattedBanks.add(entry);
         }
 
+        // Prepare Users
+        List<User> users = userRepository.findAll();
+        List<Map<String, String>> formattedUsers = new ArrayList<>();
+
+        for (User user1 : users) {
+            Map<String, String> entry = new HashMap<>();
+            entry.put("name", user1.getName());
+            entry.put("interest", String.format("%.2f%%", user1.getInterest() * 100));
+            entry.put("account", String.format("%.2f", user1.getAccount()));
+            formattedUsers.add(entry);
+        }
+
         model.addAttribute("username", user.getName());
         model.addAttribute("banks", formattedBanks);
+        model.addAttribute("users", formattedUsers);
 
         return "admin-dashboard"; // placeholder, can be created later
     }

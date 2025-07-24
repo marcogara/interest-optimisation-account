@@ -48,6 +48,25 @@
     </tbody>
 </table>
 
+<h3>All Registered User</h3>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name..................</th>
+        <th>Interest (%)............</th>
+        <th>Account Balance</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.name}">User Name</td>
+        <td th:text="${user.interest}">0.00%</td>
+        <td th:text="${user.account}">00.00</td>
+    </tr>
+    </tbody>
+</table>
+
 <p></p>
 <form th:action="@{/logout}" method="post">
     <button type="submit">Logout</button>
