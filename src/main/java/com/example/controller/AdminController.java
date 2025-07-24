@@ -62,11 +62,13 @@ public class AdminController {
         List<Map<String, String>> formattedUsers = new ArrayList<>();
 
         for (User user1 : users) {
-            Map<String, String> entry = new HashMap<>();
-            entry.put("name", user1.getName());
-            entry.put("interest", String.format("%.2f%%", user1.getInterest() * 100));
-            entry.put("account", String.format("%.2f", user1.getAccount()));
-            formattedUsers.add(entry);
+            if (!user1.getName().equals("admin")) {
+                Map<String, String> entry = new HashMap<>();
+                entry.put("name", user1.getName());
+                entry.put("interest", String.format("%.2f%%", user1.getInterest() * 100));
+                entry.put("account", String.format("%.2f", user1.getAccount()));
+                formattedUsers.add(entry);
+            }
         }
 
         model.addAttribute("username", user.getName());
