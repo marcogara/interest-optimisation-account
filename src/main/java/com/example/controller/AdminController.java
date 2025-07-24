@@ -6,6 +6,7 @@ import com.example.model.User;
 import com.example.repository.BankAllocationRepository;
 import com.example.repository.BankRepository;
 import com.example.repository.UserRepository;
+import com.example.service.InterestSnapshotService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,11 +27,13 @@ public class AdminController {
     private final UserRepository userRepository;
     private final BankRepository bankRepository;
     private final BankAllocationRepository bankAllocationRepository;
+    private final InterestSnapshotService interestSnapshotService;
 
-    public AdminController(UserRepository userRepository, BankRepository bankRepository, BankAllocationRepository bankAllocationRepository) {
+    public AdminController(UserRepository userRepository, BankRepository bankRepository, BankAllocationRepository bankAllocationRepository, InterestSnapshotService interestSnapshotService) {
         this.userRepository = userRepository;
         this.bankRepository = bankRepository;
         this.bankAllocationRepository = bankAllocationRepository;
+        this.interestSnapshotService = interestSnapshotService;
     }
 
     @GetMapping("/admin/dashboard")
@@ -104,4 +107,14 @@ public class AdminController {
         return "redirect:/admin/dashboard";
     }
 
+    @PostMapping("/admin/snapshot")
+    public String captureInterestSnapshot(Model model, RedirectAttributes redirectAttributes) {
+        try {
+            interestSnapshotService.snapshotCurrentInterest();
+            redirectAttributes.addFlashAttribute("snapshotSuccess", "✅ Interest snapshot captured.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("snapshotError", "❌ Failed to capture snapshot: " + e.getMessage());
+        }
+        return "redirect:/admin/dashboard";
+    }
 }
