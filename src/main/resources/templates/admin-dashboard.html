@@ -95,10 +95,14 @@
 <p th:if="${snapshotError}" th:text="${snapshotError}" style="color:red;"></p>
 <p></p>
 <h3>Simulate Interest Change</h3>
-<form th:action="@{/admin/simulate-interest}" method="post">
+<form th:action="@{/admin/simulate-interest}" method="post" onsubmit="return confirmSimulation();">
     <button type="submit">Simulate Interest Rates</button>
 </form>
-
+<script>
+    function confirmSimulation() {
+        return confirm("Are you sure you want to simulate interest changes?\nThis will affect all bank rates.");
+    }
+</script>
 <!-- Show success message -->
 <p th:if="${success}" th:text="${success}" style="color:green;"></p>
 
