@@ -93,6 +93,14 @@
 
 <p th:if="${snapshotSuccess}" th:text="${snapshotSuccess}" style="color:green;"></p>
 <p th:if="${snapshotError}" th:text="${snapshotError}" style="color:red;"></p>
+<p></p>
+<h3>Simulate Interest Change</h3>
+<form th:action="@{/admin/simulate-interest}" method="post">
+    <button type="submit">Simulate Interest Rates</button>
+</form>
+
+<!-- Show success message -->
+<p th:if="${success}" th:text="${success}" style="color:green;"></p>
 
 <p></p>
 <form th:action="@{/logout}" method="post">
