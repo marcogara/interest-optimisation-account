@@ -30,7 +30,7 @@ public class InterestSimulationService {
 
         while (newTopBank == previousTopBank && banks.size() > 1) {
             for (Bank bank : banks) {
-                double change = (random.nextDouble() - 0.5) * 0.001; // ±0.05%
+                double change = (random.nextDouble() - 0.5) * 0.01; // ±0.005
                 double newInterest = bank.getInterest() + change;
                 newInterest = Math.max(0.01, Math.min(0.03, newInterest)); // Clamp between 1% and 3%
                 newInterest = Math.round(newInterest * 10000.0) / 10000.0; // Round to 4 decimals
