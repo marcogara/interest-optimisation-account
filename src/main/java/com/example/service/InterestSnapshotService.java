@@ -15,15 +15,17 @@ public class InterestSnapshotService {
     private final InterestSnapshotRepository snapshotRepository;
     private final BankAllocationRepository allocationRepository;
     private final InterestEvaluator evaluator;
+    private final UserInterestUpdater userInterestUpdater;
 
     public InterestSnapshotService(
             InterestSnapshotRepository snapshotRepository,
             BankAllocationRepository allocationRepository,
-            InterestEvaluator evaluator
+            InterestEvaluator evaluator, UserInterestUpdater userInterestUpdater
     ) {
         this.snapshotRepository = snapshotRepository;
         this.allocationRepository = allocationRepository;
         this.evaluator = evaluator;
+        this.userInterestUpdater = userInterestUpdater;
     }
 
     public void snapshotCurrentInterest() {
@@ -34,6 +36,8 @@ public class InterestSnapshotService {
 
         InterestSnapshot snapshot = new InterestSnapshot(roundedRate);
         snapshotRepository.save(snapshot);
+
+        userInterestUpdater.updateAllUsersInterest(roundedRate);
 
         System.out.printf("📸 Interest snapshot saved: %.4f%n", roundedRate);
     }
