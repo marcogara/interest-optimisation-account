@@ -67,6 +67,23 @@
     </tbody>
 </table>
 
+<h3>Projected 1-Year Earnings</h3>
+<table>
+    <thead>
+    <tr>
+        <th>User...............</th>
+        <th>Projected Earnings (€)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p : ${projections}">
+        <td th:text="${p.name}">name</td>
+        <td th:text="${p.projection}">0.00</td>
+    </tr>
+    </tbody>
+</table>
+
+
 <h3>Recent Bank Allocations</h3>
 <table>
     <thead>

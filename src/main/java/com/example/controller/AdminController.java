@@ -78,6 +78,19 @@ public class AdminController {
             }
         }
 
+        List<Map<String, String>> formattedProjections = new ArrayList<>();
+
+        for (User user1 : users) {
+            if (!user1.getName().equals("admin")) {
+                Map<String, String> entry = new HashMap<>();
+                entry.put("name", user1.getName());
+                double projection = user1.getAccount() * user1.getInterest() + user1.getAccount();
+                entry.put("projection", String.format("%.2f", projection));
+                formattedProjections.add(entry);
+            }
+        }
+
+        model.addAttribute("projections", formattedProjections);
         model.addAttribute("username", user.getName());
         model.addAttribute("banks", formattedBanks);
         model.addAttribute("users", formattedUsers);
