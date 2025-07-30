@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.model.Bank;
 import com.example.model.BankAllocation;
+import com.example.model.User;
 import com.example.repository.BankRepository;
 import com.example.repository.BankAllocationRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class AllocationService {
         this.bankAllocationRepository = bankAllocationRepository;
     }
 
-    public void allocateDeposit(double amount) {
+    public void allocateDeposit(User user, double amount) {
         List<Bank> banks = bankRepository.findAll();
 
         if (banks.isEmpty()) {
@@ -36,7 +37,7 @@ public class AllocationService {
                 .orElseThrow(() -> new IllegalStateException("No bank with max interest found"));
 
         // Save allocation
-        BankAllocation allocation = new BankAllocation(targetBank, amount, "deposit");
+        BankAllocation allocation = new BankAllocation(user, targetBank, amount, "deposit");
         bankAllocationRepository.save(allocation);
 
         // Update bank account balance

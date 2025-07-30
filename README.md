@@ -78,12 +78,14 @@ GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO store_user;
 ```bash
 CREATE TABLE bank_allocation (
     id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id),       
     bank_id INTEGER NOT NULL REFERENCES bank(id),
     amount DOUBLE PRECISION NOT NULL CHECK (amount >= 0),
-    source VARCHAR(50) NOT NULL,  -- e.g., 'deposit', 'rebalancing'
-    status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',  -- e.g., 'ACTIVE', 'REALLOCATED'
+    source VARCHAR(50) NOT NULL,                           -- e.g., 'deposit', 'rebalancing'
+    status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',          -- e.g., 'ACTIVE', 'REALLOCATED'
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
   
 CREATE TABLE interest_snapshot (
     id SERIAL PRIMARY KEY,

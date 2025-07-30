@@ -25,6 +25,6 @@ public class AccountService {
         userRepository.save(user);
 
         // 👇 Trigger allocation
-        allocationService.allocateDeposit(amount);
+        allocationService.allocateDeposit(user, amount);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.model;
 
+import com.example.service.UserInterestUpdater;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -9,6 +10,10 @@ public class BankAllocation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id") // 🔹 Add this mapping
+    private User user;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "bank_id")
@@ -24,7 +29,8 @@ public class BankAllocation {
 
     public BankAllocation() {}
 
-    public BankAllocation(Bank bank, double amount, String source) {
+    public BankAllocation(User user, Bank bank, double amount, String source) {
+        this.user = user;
         this.bank = bank;
         this.amount = amount;
         this.source = source;
@@ -33,6 +39,10 @@ public class BankAllocation {
     }
 
     public Long getId() { return id; }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+
     public Bank getBank() { return bank; }
     public void setBank(Bank bank) { this.bank = bank; }
 
