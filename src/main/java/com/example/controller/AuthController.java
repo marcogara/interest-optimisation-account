@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Controller
@@ -81,6 +83,10 @@ public class AuthController {
         model.addAttribute("username", user.getName()); // or user.getEmail()
         model.addAttribute("account", user.getAccount());
         model.addAttribute("interest", formattedInterest); // pass ready string
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDate = LocalDate.now().format(formatter);
+        model.addAttribute("today", formattedDate);
 
         return "dashboard";
     }
