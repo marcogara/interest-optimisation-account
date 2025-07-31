@@ -21,7 +21,27 @@
     <input type="number" name="amount" step="0.01" required />
     <button type="submit">Add Funds</button>
 </form>
-
+<p></p>
+<h3>Recent Transaction</h3>
+<table>
+    <thead>
+    <tr>
+        <th>User...............</th>
+        <th>Amount.........</th>
+        <th>Source.........</th>
+        <th>Timestamp......</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="alloc : ${allocations}">
+        <td th:text="${alloc.user.name}">User Name</td>
+        <td th:text="${alloc.amount}">1000.00</td>
+        <td th:text="${alloc.source}">deposit</td>
+        <td th:text="${#temporals.format(alloc.timestamp, 'yyyy-MM-dd HH:mm')}">2025-07-23</td>
+    </tr>
+    </tbody>
+</table>
+<p></p>
 <form th:action="@{/logout}" method="post">
     <button type="submit">Logout</button>
 </form>

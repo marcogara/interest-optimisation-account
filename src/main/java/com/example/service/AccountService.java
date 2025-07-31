@@ -1,9 +1,12 @@
 package com.example.service;
 
+import com.example.model.BankAllocation;
 import com.example.model.User;
 import com.example.repository.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AccountService {
@@ -26,5 +29,9 @@ public class AccountService {
 
         // 👇 Trigger allocation
         allocationService.allocateDeposit(user, amount);
+    }
+
+    public List<BankAllocation> bankAllocationList1(String user) {
+        return allocationService.bankAllocationList(user);
     }
 }

@@ -47,4 +47,15 @@ public class AllocationService {
         System.out.printf("✅ Allocated %.2f to bank %s at %.2f%%%n",
                 amount, targetBank.getName(), targetBank.getInterest() * 100);
     }
+
+    public List<BankAllocation> bankAllocationList(String user) {
+        List<BankAllocation> list = bankAllocationRepository.findAll();
+
+        for (BankAllocation bankAllocation : list) {
+            if (!user.equals(bankAllocation.getUser().getName())) {
+                list.remove(bankAllocation);
+            }
+        }
+        return list;
+    }
 }

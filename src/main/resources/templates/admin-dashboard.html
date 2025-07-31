@@ -88,6 +88,7 @@
 <table>
     <thead>
     <tr>
+        <th>User...........</th>
         <th>Bank...........</th>
         <th>Amount.........</th>
         <th>Source.........</th>
@@ -96,6 +97,7 @@
     </thead>
     <tbody>
     <tr th:each="alloc : ${allocations}">
+        <td th:text="${alloc.user.name}">User Name</td>
         <td th:text="${alloc.bank.name}">Bank Name</td>
         <td th:text="${alloc.amount}">1000.00</td>
         <td th:text="${alloc.source}">deposit</td>

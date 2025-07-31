@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.model.BankAllocation;
 import com.example.model.User;
 import com.example.repository.UserRepository;
 import com.example.service.AccountService;
@@ -24,10 +25,12 @@ public class AuthController {
     private static final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$";
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private AccountService accountService;
 
-    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder,AccountService accountService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.accountService = accountService;
     }
 
     @GetMapping("/login")
@@ -80,13 +83,20 @@ public class AuthController {
         double interest = user.getInterest(); // e.g., 0.02
         String formattedInterest = String.format("%.2f%%", interest * 100); // → "2.00%"
 
-        model.addAttribute("username", user.getName()); // or user.getEmail()
+        model.addAttribute("username", user.getName());
         model.addAttribute("account", user.getAccount());
         model.addAttribute("interest", formattedInterest); // pass ready string
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String formattedDate = LocalDate.now().format(formatter);
         model.addAttribute("today", formattedDate);
+
+        // test
+         for (BankAllocation bankAllocation : accountService.bankAllocationList1(user.getName())) {
+            System.out.println("deposit : " + bankAllocation.getAmount() + " from user " + bankAllocation.getUser().getName() + "timestamp : " + bankAllocation.getTimestamp());
+        }
+
+        model.addAttribute("allocations", accountService.bankAllocationList1(user.getName())); // ✅ pass allocations
 
         return "dashboard";
     }
