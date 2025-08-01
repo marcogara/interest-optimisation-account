@@ -58,4 +58,29 @@ public class AllocationService {
         }
         return list;
     }
+
+    public void allocateWithdrawal(User user, double amount) {
+        List<Bank> banks = bankRepository.findAll();
+
+        if (banks.isEmpty()) {
+            throw new IllegalStateException("❌ No banks available for withdrawal");
+        }
+
+        // Pick the bank with the **lowest** balance or interest – your logic may vary.
+        Bank sourceBank = banks.stream()
+                .min(Comparator.comparingDouble(Bank::getInterest)) // or use account balance if needed
+                .orElseThrow(() -> new IllegalStateException("No bank found for withdrawal"));
+
+        // Save withdrawal allocation
+        BankAllocation allocation = new BankAllocation(user, sourceBank, amount, "withdrawal");
+        bankAllocationRepository.save(allocation);
+
+        // Deduct from bank account balance
+        sourceBank.setAccount(sourceBank.getAccount() - amount);
+        bankRepository.save(sourceBank);
+
+        System.out.printf("✅ Withdrawn %.2f from bank %s at %.2f%%%n",
+                amount, sourceBank.getName(), sourceBank.getInterest() * 100);
+    }
+
 }

@@ -90,12 +90,6 @@ public class AuthController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String formattedDate = LocalDate.now().format(formatter);
         model.addAttribute("today", formattedDate);
-
-        // test
-         for (BankAllocation bankAllocation : accountService.bankAllocationList1(user.getName())) {
-            System.out.println("deposit : " + bankAllocation.getAmount() + " from user " + bankAllocation.getUser().getName() + "timestamp : " + bankAllocation.getTimestamp());
-        }
-
         model.addAttribute("allocations", accountService.bankAllocationList1(user.getName())); // ✅ pass allocations
 
         return "dashboard";

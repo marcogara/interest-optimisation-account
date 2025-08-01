@@ -21,6 +21,12 @@
     <input type="number" name="amount" step="0.01" required />
     <button type="submit">Add Funds</button>
 </form>
+
+<!-- Withdraw funds form -->
+<form th:action="@{/account/withdraw}" method="post" style="margin-top: 10px;">
+    <input type="number" name="amount" step="0.01" required />
+    <button type="submit">Withdraw Funds</button>
+</form>
 <p></p>
 <h3>Recent Transaction</h3>
 <table>

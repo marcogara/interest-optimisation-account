@@ -34,4 +34,20 @@ public class AccountService {
     public List<BankAllocation> bankAllocationList1(String user) {
         return allocationService.bankAllocationList(user);
     }
+
+    public void withdrawFundsToAccount(String name, double amount) throws UsernameNotFoundException {
+        User user = userRepository.findByName(name)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        double currentBalance = user.getAccount();
+        if (currentBalance < amount) {
+            throw new IllegalArgumentException("❌ Insufficient funds. Available: " + currentBalance);
+        }
+
+        user.setAccount(user.getAccount() - amount);
+        userRepository.save(user);
+
+        // 👇 Trigger allocation
+        allocationService.allocateWithdrawal(user, amount);
+    }
 }

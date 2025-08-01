@@ -23,4 +23,12 @@ public class AccountController {
         System.out.println("Adding funds for: " + principal.getName() + " amount: " + amount);
         return "redirect:/dashboard";
     }
+
+    @PostMapping("/account/withdraw")
+    public String withdrawFunds(@RequestParam("amount") double amount, Principal principal) {
+        System.out.println("Account controller, Authenticated user: " + (principal != null ? principal.getName() : "null"));
+        accountService.withdrawFundsToAccount(principal.getName(), amount);
+        System.out.println("Withdrawing funds for: " + principal.getName() + " amount: " + amount);
+        return "redirect:/dashboard";
+    }
 }
