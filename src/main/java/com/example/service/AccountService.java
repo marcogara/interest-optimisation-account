@@ -31,10 +31,6 @@ public class AccountService {
         allocationService.allocateDeposit(user, amount);
     }
 
-    public List<BankAllocation> bankAllocationList1(String user) {
-        return allocationService.bankAllocationList(user);
-    }
-
     public void withdrawFundsToAccount(String name, double amount) throws UsernameNotFoundException {
         User user = userRepository.findByName(name)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -49,5 +45,16 @@ public class AccountService {
 
         // 👇 Trigger allocation
         allocationService.allocateWithdrawal(user, amount);
+    }
+
+    public List<BankAllocation> bankAllocationList1(String user) {
+        return allocationService.bankAllocationList(user);
+    }
+
+    public void changePendingInterest_Test(String name) {
+        User user = userRepository.findByName(name)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        user.setPendingInterestMonthlyPayment(0.07);
     }
 }

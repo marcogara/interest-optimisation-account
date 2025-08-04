@@ -27,6 +27,8 @@ public class User {
 
     private double account;
 
+    private double pendingInterestMonthlyPayment;
+
     public User(){}
 
     public User(Long id, String name, String email, String password) {
@@ -82,5 +84,13 @@ public class User {
 
     public void setAccount(double account) {
         this.account = account;
+    }
+
+    public double getPendingInterestMonthlyPayment() {
+        return pendingInterestMonthlyPayment;
+    }
+
+    public void setPendingInterestMonthlyPayment(double pendingInterestMonthlyPayment) {
+        this.pendingInterestMonthlyPayment = pendingInterestMonthlyPayment;
     }
 }

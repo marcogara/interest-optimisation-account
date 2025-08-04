@@ -87,6 +87,10 @@ public class AuthController {
         model.addAttribute("account", user.getAccount());
         model.addAttribute("interest", formattedInterest); // pass ready string
 
+        // test
+        accountService.changePendingInterest_Test(user.getName());
+        model.addAttribute("pending", user.getPendingInterestMonthlyPayment());
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String formattedDate = LocalDate.now().format(formatter);
         model.addAttribute("today", formattedDate);
