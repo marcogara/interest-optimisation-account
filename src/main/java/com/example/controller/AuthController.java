@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -91,7 +92,10 @@ public class AuthController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String formattedDate = LocalDate.now().format(formatter);
         model.addAttribute("today", formattedDate);
-        model.addAttribute("allocations", accountService.bankAllocationList1(user.getName())); // ✅ pass allocations
+
+        if (user.getAccount() != 0) {
+            model.addAttribute("allocations", accountService.bankAllocationList1(user.getName()));
+        }
 
         return "dashboard";
     }
