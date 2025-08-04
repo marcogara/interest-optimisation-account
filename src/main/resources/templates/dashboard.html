@@ -2,53 +2,63 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>User Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
 </head>
 <body>
 <h1>Dashboard</h1>
 <h2>Welcome, <span th:text="${username}">user</span>!</h2>
-<p>You are authorized to access this page.</p>
 
-<div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; width: fit-content;">
+<div class="summary-box">
     <h3>Account Summary</h3>
-    <p>Date: <strong th:text="${today}">DD-MM-YYYY</strong></p>
+    <p>Today's date: <strong th:text="${today}">DD-MM-YYYY</strong></p>
     <p>Balance: <strong th:text="${#numbers.formatDecimal(account, 1, 2)} + ' €'">0.00 €</strong></p>
     <p>Interest Rate: <strong th:text="${interest}">0.00%</strong></p>
-    <p>Pending Interest: <strong th:text="${#numbers.formatDecimal(pending, 1, 2)} + ' €'">0.00 €</strong></p>
+    <p>
+        Pending Interest:
+        <strong title="Accumulated but unpaid interest. Paid monthly."
+                th:text="${#numbers.formatDecimal(pending, 1, 2)} + ' €'">0.00 €</strong>
+    </p>
+    <p><em>Next payout: end of month</em></p>
 </div>
+
 <!-- Add funds form -->
 <form th:action="@{/account/add}" method="post">
-    <input type="number" name="amount" step="0.01" required />
+    <input type="number" name="amount" step="0.01" placeholder="Add amount" required />
     <button type="submit">Add Funds</button>
 </form>
+
 <!-- Withdraw funds form -->
-<form th:action="@{/account/withdraw}" method="post" style="margin-top: 10px;">
-    <input type="number" name="amount" step="0.01" required />
+<form th:action="@{/account/withdraw}" method="post">
+    <input type="number" name="amount" step="0.01" placeholder="Withdraw amount" required />
     <button type="submit">Withdraw Funds</button>
 </form>
-<p></p>
-<h3>Recent Transaction</h3>
+
+<!-- Allocations table -->
+<h3>Recent Transactions</h3>
 <table>
     <thead>
     <tr>
-        <th>User...............</th>
-        <th>Amount.........</th>
-        <th>Source.........</th>
-        <th>Timestamp......</th>
+        <th>User</th>
+        <th>Amount</th>
+        <th>Source</th>
+        <th>Timestamp</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="alloc : ${allocations}">
         <td th:text="${alloc.user.name}">User Name</td>
-        <td th:text="${alloc.amount}">1000.00</td>
+        <td th:text="${#numbers.formatDecimal(alloc.amount, 1, 2)}">1000.00</td>
         <td th:text="${alloc.source}">deposit</td>
-        <td th:text="${#temporals.format(alloc.timestamp, 'yyyy-MM-dd HH:mm')}">2025-07-23</td>
+        <td th:text="${#temporals.format(alloc.timestamp, 'dd-MM-yyyy HH:mm')}">23-07-2025</td>
     </tr>
     </tbody>
 </table>
-<p></p>
-<form th:action="@{/logout}" method="post">
+
+<!-- Logout -->
+<form th:action="@{/logout}" method="post" style="margin-top: 20px;">
     <button type="submit">Logout</button>
 </form>
+
 </body>
 </html>
