@@ -9,21 +9,18 @@
 <h2>Welcome, <span th:text="${username}">user</span>!</h2>
 <p>You are authorized to access this page.</p>
 
-<p>Today's date: <strong th:text="${today}">DD-MM-YYYY</strong></p>
-
-<!-- Show current balance -->
-<p>Your account balance: <strong th:text="${#numbers.formatDecimal(account, 1, 2)}">0.00</strong></p>
-
-<p>Your current interest is: <strong th:text="${interest}">0.00%</strong></p>
-
-<p>Your current pending interest payment is: <strong th:text="${#numbers.formatDecimal(pending, 1, 2)}">0.00</strong></p>
-
+<div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; width: fit-content;">
+    <h3>Account Summary</h3>
+    <p>Date: <strong th:text="${today}">DD-MM-YYYY</strong></p>
+    <p>Balance: <strong th:text="${#numbers.formatDecimal(account, 1, 2)} + ' €'">0.00 €</strong></p>
+    <p>Interest Rate: <strong th:text="${interest}">0.00%</strong></p>
+    <p>Pending Interest: <strong th:text="${#numbers.formatDecimal(pending, 1, 2)} + ' €'">0.00 €</strong></p>
+</div>
 <!-- Add funds form -->
 <form th:action="@{/account/add}" method="post">
     <input type="number" name="amount" step="0.01" required />
     <button type="submit">Add Funds</button>
 </form>
-
 <!-- Withdraw funds form -->
 <form th:action="@{/account/withdraw}" method="post" style="margin-top: 10px;">
     <input type="number" name="amount" step="0.01" required />
