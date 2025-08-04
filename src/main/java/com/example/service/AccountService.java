@@ -3,9 +3,12 @@ package com.example.service;
 import com.example.model.BankAllocation;
 import com.example.model.User;
 import com.example.repository.UserRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -51,10 +54,32 @@ public class AccountService {
         return allocationService.bankAllocationList(user);
     }
 
-    public void changePendingInterest_Test(String name) {
-        User user = userRepository.findByName(name)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    @PostConstruct
+    public void updateAllPendingInterestOnStartup() {
+        List<User> users = userRepository.findAll();
 
-        user.setPendingInterestMonthlyPayment(0.07);
+        LocalDate today = LocalDate.now();
+
+        for (User user : users) {
+            if ("admin".equals(user.getName())) continue; // Skip admin
+
+            LocalDate lastUpdate = user.getLastPendingInterestUpdate();
+            if (lastUpdate == null) lastUpdate = today.minusDays(1);
+
+            long daysMissed = ChronoUnit.DAYS.between(lastUpdate, today);
+            if (daysMissed <= 0) continue;
+
+            double dailyRate = user.getInterest() / 365.0;
+            double interestGained = user.getAccount() * dailyRate * daysMissed;
+
+            double newPending = user.getPendingInterestMonthlyPayment() + interestGained;
+
+            user.setPendingInterestMonthlyPayment(newPending);
+            user.setLastPendingInterestUpdate(today);
+
+            userRepository.save(user);
+        }
+
+        System.out.println("✅ Daily pending interest updated for all users.");
     }
 }

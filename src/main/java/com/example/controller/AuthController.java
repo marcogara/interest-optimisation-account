@@ -86,9 +86,6 @@ public class AuthController {
         model.addAttribute("username", user.getName());
         model.addAttribute("account", user.getAccount());
         model.addAttribute("interest", formattedInterest); // pass ready string
-
-        // test
-        accountService.changePendingInterest_Test(user.getName());
         model.addAttribute("pending", user.getPendingInterestMonthlyPayment());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");

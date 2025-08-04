@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
+import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "users") // Optional: sets the table name
@@ -28,6 +30,8 @@ public class User {
     private double account;
 
     private double pendingInterestMonthlyPayment;
+
+    private LocalDate lastPendingInterestUpdate;
 
     public User(){}
 
@@ -92,5 +96,13 @@ public class User {
 
     public void setPendingInterestMonthlyPayment(double pendingInterestMonthlyPayment) {
         this.pendingInterestMonthlyPayment = pendingInterestMonthlyPayment;
+    }
+
+    public LocalDate getLastPendingInterestUpdate() {
+        return lastPendingInterestUpdate;
+    }
+
+    public void setLastPendingInterestUpdate(LocalDate lastPendingInterestUpdate) {
+        this.lastPendingInterestUpdate = lastPendingInterestUpdate;
     }
 }
