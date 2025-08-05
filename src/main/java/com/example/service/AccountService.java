@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -51,7 +52,12 @@ public class AccountService {
     }
 
     public List<BankAllocation> bankAllocationList1(String user) {
-        return allocationService.bankAllocationList(user);
+        try {
+            return allocationService.bankAllocationList(user);
+        } catch (Exception e) {
+            // Log, return empty list to avoid breaking controller
+            return Collections.emptyList();
+        }
     }
 
     @PostConstruct

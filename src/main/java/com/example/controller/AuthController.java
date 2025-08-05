@@ -93,8 +93,9 @@ public class AuthController {
         String formattedDate = LocalDate.now().format(formatter);
         model.addAttribute("today", formattedDate);
 
-        if (user.getAccount() != 0) {
-            model.addAttribute("allocations", accountService.bankAllocationList1(user.getName()));
+        List<BankAllocation> allocations = accountService.bankAllocationList1(user.getName());
+        if (!allocations.isEmpty()) {
+            model.addAttribute("allocations", allocations);
         }
 
         return "dashboard";
