@@ -2,17 +2,15 @@ package com.example.controller;
 
 import com.example.model.BankAllocation;
 import com.example.model.User;
-import com.example.repository.UserRepository;
 import com.example.service.AccountService;
+import com.example.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -23,14 +21,11 @@ import java.util.Optional;
 @Controller
 public class AuthController {
 
-    private static final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$";
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private AccountService accountService;
+    private final UserService userService;
+    private final AccountService accountService;
 
-    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder,AccountService accountService) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    public AuthController(UserService userService, AccountService accountService) {
+        this.userService = userService;
         this.accountService = accountService;
     }
 
@@ -49,7 +44,7 @@ public class AuthController {
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
 
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+        if (userService.findByEmail(user.getEmail()).isPresent()) {
             model.addAttribute("error", "Email already registered.");
             return "register";
         }
@@ -58,24 +53,16 @@ public class AuthController {
             return "register";
         }
 
-        String password = user.getPassword();
-
-        if (password.matches(PASSWORD_PATTERN)) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
-            model.addAttribute("success", "Account created. Please log in.");
-            return "register";
-        } else {
-            model.addAttribute("error", "Password must contain at least 1 uppercase letter, 1 number, and be 8+ characters long");
-            return "register";
-        }
+        userService.registerUser(user);
+        model.addAttribute("success", "Account created. Please log in.");
+        return "register";
     }
 
     @GetMapping("/dashboard")
     public String dashboard(Model model, Principal principal) {
         System.out.println("Dashboard accessed by: " + (principal != null ? principal.getName() : "anonymous"));
 
-        Optional<User> userOptional = userRepository.findByName(principal.getName());
+        Optional<User> userOptional = userService.findByName(principal.getName());
 
         User user = userOptional.orElseThrow(() -> new RuntimeException("User not found"));
 
