@@ -49,14 +49,9 @@ public class AllocationService {
     }
 
     public List<BankAllocation> bankAllocationList(String user) {
-        List<BankAllocation> list = bankAllocationRepository.findAll();
-
-        for (BankAllocation bankAllocation : list) {
-            if (!user.equals(bankAllocation.getUser().getName())) {
-                list.remove(bankAllocation);
-            }
-        }
-        return list;
+        return bankAllocationRepository.findAll().stream()
+                .filter(allocation -> user.equals(allocation.getUser().getName()))
+                .toList(); // Java 16+; or use .collect(Collectors.toList()) for older versions
     }
 
     public void allocateWithdrawal(User user, double amount) {
