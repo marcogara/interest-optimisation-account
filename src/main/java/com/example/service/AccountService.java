@@ -79,6 +79,7 @@ public class AccountService {
             double interestGained = user.getAccount() * dailyRate * daysMissed;
 
             double newPending = user.getPendingInterestMonthlyPayment() + interestGained;
+            newPending = Math.round(newPending * 10000.0) / 10000.0; // round to 4 decimals
 
             user.setPendingInterestMonthlyPayment(newPending);
             user.setLastPendingInterestUpdate(today);
