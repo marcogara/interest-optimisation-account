@@ -5,6 +5,7 @@ import com.example.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,5 +45,13 @@ public class UserService {
      */
     public Optional<User> findByName(String name) {
         return userRepository.findByName(name);
+    }
+
+    /**
+     * Finds all users.
+     * @return A list of all users.
+     */
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }

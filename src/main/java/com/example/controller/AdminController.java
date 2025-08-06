@@ -5,7 +5,7 @@ import com.example.model.BankAllocation;
 import com.example.model.User;
 import com.example.repository.BankAllocationRepository;
 import com.example.repository.BankRepository;
-import com.example.repository.UserRepository;
+import com.example.service.UserService;
 import com.example.service.InterestSnapshotService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
@@ -24,13 +24,13 @@ import java.util.Map;
 @Controller
 public class AdminController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final BankRepository bankRepository;
     private final BankAllocationRepository bankAllocationRepository;
     private final InterestSnapshotService interestSnapshotService;
 
-    public AdminController(UserRepository userRepository, BankRepository bankRepository, BankAllocationRepository bankAllocationRepository, InterestSnapshotService interestSnapshotService) {
-        this.userRepository = userRepository;
+    public AdminController(UserService userService, BankRepository bankRepository, BankAllocationRepository bankAllocationRepository, InterestSnapshotService interestSnapshotService) {
+        this.userService = userService;
         this.bankRepository = bankRepository;
         this.bankAllocationRepository = bankAllocationRepository;
         this.interestSnapshotService = interestSnapshotService;
@@ -43,7 +43,7 @@ public class AdminController {
             return "redirect:/login";
         }
 
-        User user = userRepository.findByName(principal.getName())
+        User user = userService.findByName(principal.getName())
                 .orElse(null);
 
         // Only allow access if username is "admin"
@@ -65,7 +65,7 @@ public class AdminController {
         }
 
         // Prepare Users
-        List<User> users = userRepository.findAll();
+        List<User> users = userService.findAll();
         List<Map<String, String>> formattedUsers = new ArrayList<>();
 
         for (User user1 : users) {
