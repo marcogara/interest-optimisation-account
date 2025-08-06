@@ -21,8 +21,6 @@ public class User {
     private String email;
 
     @NotBlank
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$",
-            message = "Password must contain at least 1 uppercase letter, 1 number, and be 8+ characters long")
     private String password;
 
     private double interest;
