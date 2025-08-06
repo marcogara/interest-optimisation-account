@@ -2,7 +2,7 @@ package com.example.controller;
 
 import com.example.model.Bank;
 import com.example.model.User;
-import com.example.repository.BankAllocationRepository;
+import com.example.service.BankAllocationService;
 import com.example.service.BankService;
 import com.example.service.InterestSnapshotService;
 import com.example.service.UserService;
@@ -25,13 +25,13 @@ public class AdminController {
 
     private final UserService userService;
     private final BankService bankService;
-    private final BankAllocationRepository bankAllocationRepository;
+    private final BankAllocationService bankAllocationService;
     private final InterestSnapshotService interestSnapshotService;
 
-    public AdminController(UserService userService, BankService bankService, BankAllocationRepository bankAllocationRepository, InterestSnapshotService interestSnapshotService) {
+    public AdminController(UserService userService, BankService bankService, BankAllocationService bankAllocationService, InterestSnapshotService interestSnapshotService) {
         this.userService = userService;
         this.bankService = bankService;
-        this.bankAllocationRepository = bankAllocationRepository;
+        this.bankAllocationService = bankAllocationService;
         this.interestSnapshotService = interestSnapshotService;
     }
 
@@ -93,7 +93,7 @@ public class AdminController {
         model.addAttribute("username", user.getName());
         model.addAttribute("banks", formattedBanks);
         model.addAttribute("users", formattedUsers);
-        model.addAttribute("allocations", bankAllocationRepository.findAll()); // ✅ pass allocations
+        model.addAttribute("allocations", bankAllocationService.findAll()); // ✅ pass allocations
 
         return "admin-dashboard"; // placeholder, can be created later
     }
