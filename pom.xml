@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>authcore</artifactId>
+	<artifactId>interest-optimisation-account</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>authcore</name>
-	<description>Demo project for Spring Boot</description>
+	<name>interest-optimisation-account</name>
+	<description>SpringBoot project</description>
 	<url/>
 	<licenses>
 		<license/>

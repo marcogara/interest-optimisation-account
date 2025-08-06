@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AuthcoreIOAApplication {
+public class IOAApplication {
 
 	public static void main(String[] args) {
 
-		SpringApplication.run(AuthcoreIOAApplication.class, args);
+		SpringApplication.run(IOAApplication.class, args);
 	}
 }
