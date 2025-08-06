@@ -1,12 +1,11 @@
 package com.example.controller;
 
 import com.example.model.Bank;
-import com.example.model.BankAllocation;
 import com.example.model.User;
 import com.example.repository.BankAllocationRepository;
-import com.example.repository.BankRepository;
-import com.example.service.UserService;
+import com.example.service.BankService;
 import com.example.service.InterestSnapshotService;
+import com.example.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,13 +24,13 @@ import java.util.Map;
 public class AdminController {
 
     private final UserService userService;
-    private final BankRepository bankRepository;
+    private final BankService bankService;
     private final BankAllocationRepository bankAllocationRepository;
     private final InterestSnapshotService interestSnapshotService;
 
-    public AdminController(UserService userService, BankRepository bankRepository, BankAllocationRepository bankAllocationRepository, InterestSnapshotService interestSnapshotService) {
+    public AdminController(UserService userService, BankService bankService, BankAllocationRepository bankAllocationRepository, InterestSnapshotService interestSnapshotService) {
         this.userService = userService;
-        this.bankRepository = bankRepository;
+        this.bankService = bankService;
         this.bankAllocationRepository = bankAllocationRepository;
         this.interestSnapshotService = interestSnapshotService;
     }
@@ -53,7 +52,7 @@ public class AdminController {
         }
 
         // Prepare formatted bank data
-        List<Bank> banks = bankRepository.findAll();
+        List<Bank> banks = bankService.findAll();
         List<Map<String, String>> formattedBanks = new ArrayList<>();
 
         for (Bank bank : banks) {
@@ -111,7 +110,7 @@ public class AdminController {
 
         try {
             Bank bank = new Bank(name, interest, account);
-            bankRepository.save(bank);
+            bankService.save(bank);
 
             redirectAttributes.addFlashAttribute("success", "✅ Bank created successfully.");
         } catch (Exception e) {
