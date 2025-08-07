@@ -3,6 +3,8 @@ package com.example.repository;
 import com.example.model.BankAllocation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface BankAllocationRepository extends JpaRepository<BankAllocation, Long> {
-    // You can add custom queries here later, e.g., findByStatus("ACTIVE")
+    List<BankAllocation> findByUser_Name(String userName);
 }

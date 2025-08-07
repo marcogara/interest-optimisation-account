@@ -48,10 +48,8 @@ public class AllocationService {
                 amount, targetBank.getName(), targetBank.getInterest() * 100);
     }
 
-    public List<BankAllocation> bankAllocationList(String user) {
-        return bankAllocationRepository.findAll().stream()
-                .filter(allocation -> user.equals(allocation.getUser().getName()))
-                .toList(); // Java 16+; or use .collect(Collectors.toList()) for older versions
+    public List<BankAllocation> findAllocationsByUserName(String userName) {
+        return bankAllocationRepository.findByUser_Name(userName);
     }
 
     public void allocateWithdrawal(User user, double amount) {

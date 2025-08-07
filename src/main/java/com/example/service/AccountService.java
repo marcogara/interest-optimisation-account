@@ -51,9 +51,9 @@ public class AccountService {
         allocationService.allocateWithdrawal(user, amount);
     }
 
-    public List<BankAllocation> bankAllocationList1(String user) {
+    public List<BankAllocation> getBankAllocationsForUser(String userName) {
         try {
-            return allocationService.bankAllocationList(user);
+            return allocationService.findAllocationsByUserName(userName);
         } catch (Exception e) {
             // Log, return empty list to avoid breaking controller
             return Collections.emptyList();
