@@ -45,12 +45,6 @@ public class AdminController {
         User user = userService.findByName(principal.getName())
                 .orElse(null);
 
-        // Only allow access if username is "admin"
-        if (user == null || !"admin".equals(user.getName())) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return "redirect:/dashboard"; // or a custom 403 page
-        }
-
         // Prepare formatted bank data
         List<Bank> banks = bankService.findAll();
         List<Map<String, String>> formattedBanks = new ArrayList<>();
@@ -68,7 +62,7 @@ public class AdminController {
         List<Map<String, String>> formattedUsers = new ArrayList<>();
 
         for (User user1 : users) {
-            if (!user1.getName().equals("admin")) {
+            if (!"ADMIN".equals(user1.getRole())) {
                 Map<String, String> entry = new HashMap<>();
                 entry.put("name", user1.getName());
                 entry.put("interest", String.format("%.2f%%", user1.getInterest() * 100));
@@ -80,7 +74,7 @@ public class AdminController {
         List<Map<String, String>> formattedProjections = new ArrayList<>();
 
         for (User user1 : users) {
-            if (!user1.getName().equals("admin")) {
+            if (!"ADMIN".equals(user1.getRole())) {
                 Map<String, String> entry = new HashMap<>();
                 entry.put("name", user1.getName());
                 double projection = user1.getAccount() * user1.getInterest() + user1.getAccount();
@@ -104,10 +98,6 @@ public class AdminController {
                                @RequestParam double account,
                                Principal principal,
                                RedirectAttributes redirectAttributes) {
-        if (!"admin".equals(principal.getName())) {
-            return "redirect:/dashboard";
-        }
-
         try {
             Bank bank = new Bank(name, interest, account);
             bankService.save(bank);

@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register", "/login", "/css/**").permitAll()
-                        .requestMatchers("/admin/**").authenticated() // ✅ admin routes must be logged in
+                        .requestMatchers("/admin/**").hasRole("ADMIN") // ✅ admin routes must be logged in
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
