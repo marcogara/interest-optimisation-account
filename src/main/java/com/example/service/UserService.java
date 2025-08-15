@@ -13,10 +13,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    InterestSnapshotService interestSnapshotService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, InterestSnapshotService interestSnapshotService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.interestSnapshotService = interestSnapshotService;
     }
 
     /**
@@ -36,7 +38,15 @@ public class UserService {
         // Encode password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("USER");
+
         userRepository.save(user);
+
+        // when a user register the snapshot allow to assign the new user with the correct interest rate. To refactor at later stage.
+        try {
+            interestSnapshotService.snapshotCurrentInterest();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     /**
