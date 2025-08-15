@@ -8,17 +8,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.model.InterestSnapshot;
+import com.example.repository.InterestSnapshotRepository;
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    InterestSnapshotService interestSnapshotService;
+    private final InterestSnapshotRepository interestSnapshotRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, InterestSnapshotService interestSnapshotService) {
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, InterestSnapshotRepository interestSnapshotRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.interestSnapshotService = interestSnapshotService;
+        this.interestSnapshotRepository = interestSnapshotRepository;
     }
 
     /**
@@ -34,19 +39,17 @@ public class UserService {
      * Registers a new user. This method handles password encoding and saving the user.
      * @param user The user object to register, containing the plaintext password.
      */
+    @Transactional
     public void registerUser(User user) {
         // Encode password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("USER");
 
-        userRepository.save(user);
+        // Assign the latest interest rate to the new user
+        Optional<InterestSnapshot> latestSnapshot = Optional.ofNullable(interestSnapshotRepository.findTopByOrderByValidFromDesc());
+        latestSnapshot.ifPresent(snapshot -> user.setInterest(snapshot.getEffectiveInterest()));
 
-        // when a user register the snapshot allow to assign the new user with the correct interest rate. To refactor at later stage.
-        try {
-            interestSnapshotService.snapshotCurrentInterest();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        userRepository.save(user);
     }
 
     /**
